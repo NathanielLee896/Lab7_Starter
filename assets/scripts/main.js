@@ -127,12 +127,7 @@ function createRecipeCards() {
     const pageName = recipeData[recipes[i]]['page-name'];
     router.addPage(pageName, function() {
       document.querySelector('.section--recipe-cards').classList.remove('shown');
-      if(i > 2) {
-        document.querySelector('.section--recipe-expand').classList.add('hidden');
-      }
-      else {
-        document.querySelector('.section--recipe-expand').classList.add('shown');
-      }
+      document.querySelector('.section--recipe-expand').classList.add('shown');
       document.querySelector('recipe-expand').data = recipeData[recipes[i]];
     });
     bindRecipeCard(newRecipeCard, pageName);
