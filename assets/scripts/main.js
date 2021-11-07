@@ -57,6 +57,7 @@ function initializeServiceWorker() {
    *  TODO - Part 2 Step 1
    *  Initialize the service worker set up in sw.js
    */
+  
 }
 
 /**
@@ -192,7 +193,7 @@ function bindEscKey() {
    * page. This will let us go back to the home page from the detailed page.
    */
   window.addEventListener('keydown', (e) => {
-    if(e === 'esc') {
+    if(e.key === 'Escape') {
       router.navigate('home');
     }
   });
@@ -218,10 +219,7 @@ function bindPopstate() {
    * creating an infinite loop
    */
   window.addEventListener('popstate', (e) => {
-    if(e.state == null) {
-      router.navigate('home', true);
-    }
-    else if(e.state != 'home') {
+    if(e.state) {
       router.navigate(e.state, true);
     }
     else {
