@@ -38,7 +38,7 @@ export class Router {
      * router instance using the 'this' keyword. Substitute 'home' for the variable
      * page
      */
-    this['page'] = pageFunc;
+    this[page] = pageFunc;
   }
 
   /**
@@ -55,7 +55,7 @@ export class Router {
      * Now, we are going to call the functions that we stored earlier based on 
      * what page is being requested. For this function:
      * 
-     *  1. First, check to see if the function exists, if it doesn't log an error
+     *  1. First, check to see if the function exists, if it doesn't, log an error
      *     and return out of the function. 'this' is a global variable, so you can 
      *     check to see if it exists nearly the same way you assigned it
      *  2. Create a variable called hash. If page == 'home' set hash to be an empty
@@ -66,19 +66,20 @@ export class Router {
      *     and URL + hash to history
      *  4. Finally, call the stored function for the given page
      */
+    if(this[page] == null) {
+      console.log("Error: The function does not exist.");
+      return;
+    }
     var hash;
-    if(statePopped === true){
-      if(this.page == 'home') {
+    if(page == 'home') {
         hash = '';
-      }
-      else {
-        hash = '#' + this.page;
-      }
     }
-    else{
-      if(window.location.hash != hash){
-        history.pushState(statePopped, window.location.origin + hash);
-      }
+    else {
+        hash = '#' + page; 
     }
+    if(statePopped == false && window.location.hash != hash){
+        history.pushState(page, window.location.origin + hash);
+    }
+    this[page];
   }
 }

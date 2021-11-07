@@ -25,8 +25,8 @@ const router = new Router(function () {
    * This will only be two single lines
    * If you did this right, you should see just 1 recipe card rendered to the screen
    */
-  let addShown = document.querySelector('section.section--recipe-cards').classList.add("shown");
-  let removeShown = document.querySelector('section.section--recipe-expand').classList.remove("shown");
+  document.querySelector('section.section--recipe-cards').classList.add("shown");
+  document.querySelector('section.section--recipe-expand').classList.remove("shown");
 });
 
 window.addEventListener('DOMContentLoaded', init);
@@ -91,25 +91,25 @@ async function fetchRecipes() {
  */
 function createRecipeCards() {
   // Makes a new recipe card
-  const recipeCard = document.createElement('recipe-card');
+  //const recipeCard = document.createElement('recipe-card');
   // Inputs the data for the card. This is just the first recipe in the recipes array,
   // being used as the key for the recipeData object
-  recipeCard.data = recipeData[recipes[0]];
+  //recipeCard.data = recipeData[recipes[0]];
 
   // This gets the page name of each of the arrays - which is basically
   // just the filename minus the .json. Since this is the first element
   // in our recipes array, the ghostCookies URL, we will receive the .json
   // for that ghostCookies URL since it's a key in the recipeData object, and
   // then we'll grab the 'page-name' from it - in this case it will be 'ghostCookies'
-  const page = recipeData[recipes[0]]['page-name'];
-  router.addPage(page, function() {
-    document.querySelector('.section--recipe-cards').classList.remove('shown');
-    document.querySelector('.section--recipe-expand').classList.add('shown');
-    document.querySelector('recipe-expand').data = recipeData[recipes[0]];
-  });
-  bindRecipeCard(recipeCard, page);
+  //const page = recipeData[recipes[0]]['page-name'];
+  //router.addPage(page, function() {
+  //  document.querySelector('.section--recipe-cards').classList.remove('shown');
+  //  document.querySelector('.section--recipe-expand').classList.add('shown');
+  //  document.querySelector('recipe-expand').data = recipeData[recipes[0]];
+  //});
+  //bindRecipeCard(recipeCard, page);
 
-  document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
+  //document.querySelector('.recipe-cards--wrapper').appendChild(recipeCard);
 
   /**
    * TODO - Part 1 - Step 3
@@ -121,7 +121,7 @@ function createRecipeCards() {
    * After this step you should see multiple cards rendered like the end of the last
    * lab
    */
-  for(let i = 1; i < recipes.length; i++) {
+  for(let i = 0; i < recipes.length; i++) {
     const newRecipeCard = document.createElement('recipe-card');
     newRecipeCard.data = recipeData[recipes[i]];
     const pageName = recipeData[recipes[i]]['page-name'];
@@ -130,6 +130,9 @@ function createRecipeCards() {
       document.querySelector('.section--recipe-expand').classList.add('shown');
       document.querySelector('recipe-expand').data = recipeData[recipes[i]];
     });
+    if(i > 2) {
+      newRecipeCard.classList.add('hidden');
+    }
     bindRecipeCard(newRecipeCard, pageName);
     document.querySelector('.recipe-cards--wrapper').appendChild(newRecipeCard);
   }
@@ -189,7 +192,9 @@ function bindEscKey() {
    * page. This will let us go back to the home page from the detailed page.
    */
   window.addEventListener('keydown', (e) => {
-    router.navigate('home');
+    if(e === 'esc') {
+      router.navigate('home');
+    }
   });
 }
 
@@ -213,7 +218,10 @@ function bindPopstate() {
    * creating an infinite loop
    */
   window.addEventListener('popstate', (e) => {
-    if(e.state != 'home') {
+    if(e.state == null) {
+      router.navigate('home', true);
+    }
+    else if(e.state != 'home') {
       router.navigate(e.state, true);
     }
     else {
